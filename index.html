@@ -19,13 +19,16 @@
 <body>
 <script>
 let font;
-let textStr = "BREAK THE TEXT APART WITH A CLICK | CLICK AGAIN TO REASSEMBLE";
+let lines = [
+  "BREAK THE TEXT APART WITH A CLICK",
+  "CLICK AGAIN TO REASSEMBLE"
+];
 let letters = [];
 let exploded = false;
-let fontSize = 30; // ← Change this to control the size
+let fontSize = 30;
 
 function preload() {
-  font = loadFont("assets/YoungSerif-Regular.otf"); // Make sure this path is correct
+  font = loadFont("assets/YoungSerif-Regular.otf"); // Make sure this file exists
 }
 
 function setup() {
@@ -34,22 +37,30 @@ function setup() {
   textSize(fontSize);
   textAlign(CENTER, CENTER);
 
-  let startX = width / 2 - textWidth(textStr) / 2;
-  let x = startX;
+  let totalHeight = lines.length * fontSize * 1.5;
+  let startY = height / 2 - totalHeight / 2;
 
-  for (let i = 0; i < textStr.length; i++) {
-    let c = textStr.charAt(i);
-    let letterWidth = textWidth(c);
-    letters.push(new Letter(c, x + letterWidth / 2, height / 2));
-    x += letterWidth;
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i];
+    let lineWidth = textWidth(line);
+    let startX = width / 2 - lineWidth / 2;
+    let x = startX;
+    let y = startY + i * fontSize * 1.5;
+
+    for (let j = 0; j < line.length; j++) {
+      let c = line.charAt(j);
+      let w = textWidth(c);
+      letters.push(new Letter(c, x + w / 2, y));
+      x += w;
+    }
   }
 }
 
 function draw() {
   background("#604200");
 
-  textFont(font);     // ← Needed to ensure font/size is applied each frame
-  textSize(fontSize); // ← Re-apply size if needed
+  textFont(font);
+  textSize(fontSize);
 
   for (let letter of letters) {
     letter.update();
