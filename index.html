@@ -1,4 +1,4 @@
-/<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -22,15 +22,16 @@ let font;
 let textStr = "CLICK THE SCREEN";
 let letters = [];
 let exploded = false;
+let fontSize = 100; // ← Change this to control the size
 
 function preload() {
-  font = 'assets/YoungSerif-Regular.otf'; // You can replace with loadFont('assets/YourFont.otf') if needed
+  font = loadFont("assets/YoungSerif-Regular.otf"); // Make sure this path is correct
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   textFont(font);
-  textSize(400);
+  textSize(fontSize);
   textAlign(CENTER, CENTER);
 
   let startX = width / 2 - textWidth(textStr) / 2;
@@ -46,6 +47,9 @@ function setup() {
 
 function draw() {
   background("#604200");
+
+  textFont(font);     // ← Needed to ensure font/size is applied each frame
+  textSize(fontSize); // ← Re-apply size if needed
 
   for (let letter of letters) {
     letter.update();
